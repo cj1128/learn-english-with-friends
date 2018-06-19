@@ -1,0 +1,62 @@
+@page {
+  size: 5.5in 8.5in;
+  margin: 20pt 20pt 20pt 20pt;
+
+  @bottom-left {
+    margin: 0pt 0 10pt 0;
+    border-bottom: .25pt solid #333;
+    content: string(doctitle);
+    font-size: 5pt;
+    color: #333;
+  }
+
+  @bottom-right {
+    margin: 0pt 0 10pt 0;
+    border-bottom: .25pt solid #333;
+    content: counter(page);
+    font-size: 5pt;
+    color: #333;
+  }
+}
+
+html {
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  line-height: 1.4;
+  font-size: 7pt;
+}
+
+p {
+  margin: 5px 0;
+}
+
+h1+p, h2+p, h3+p {
+  page-break-before: avoid;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-family: "Helvetica";
+  text-align: center;
+  font-weight: bold;
+  margin: 15px;
+  page-break-after: avoid;
+  page-break-inside:avoid;
+  string-set: doctitle content();
+}
+
+.scene {
+  color: #666;
+  font-weight: bold;
+}
+
+.comment {
+  color: gray;
+}
+
+.person {
+  font-weight: bold;
+}
+
+.end {
+  font-weight: bold;
+}

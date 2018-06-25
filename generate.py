@@ -19,72 +19,23 @@ template = Template("""
 </html>
 """)
 
-# remove `Commercial Break`, `Closing Credits`
-# find overlapped line
-def sanitize(text):
-  lines = [(idx, line) for idx, line in enumerate(text.split("\n")) if line.strip() != ""]
-  result = []
-  pattern = re.compile(r"[A-Z][a-z]+: ")
-  err_count = 0
-  for idx, line in lines:
-    if line == "Commercial Break" or line == "Closing Credits":
-      continue
+def format(line):
+  # comment
+  line = re.sub(r"\[.+?\]", "<span class='comment'>\\g<0></span>", line)
 
-    if len(pattern.findall(line)) > 1:
-      err_count += 1
-      print(f"[error, line {idx + 1}] {line}")
+  # person
+  line = re.sub(r"^\w.+?:", "<span class='person'>\\g<0></span>", line)
 
-    result.append(line)
+  # highlight
+  line = re.sub(r"\*(.+?)\*", "<span class='highlight'>\\1</span>", line)
 
-  if err_count > 0:
-    exit(1)
-
-  return result
-
-# title: first line
-# end: last line
-# scene: in []
-# comment: in ()
-# conversation: normal line
-def parse(lines):
-  result = []
-
-  # title
-  result.append(("title", lines[0]))
-
-  for line in lines[1:-1]:
-    # secne
-    if line.startswith("["):
-      result.append(("scene", line))
-      continue
-
-    # comment
-    if line.startswith("("):
-      result.append(("comment", line))
-      continue
-
-    # conversation
-    result.append(("conv", line))
-
-  # end
-  result.append(("end", lines[-1]))
-
-  return result
-
-def format(item):
-  if item[0] == "conv":
-    index = item[1].index(":")
-    person = item[1][:index]
-    content = item[1][index+1:]
-    return f"<p><span class='person'>{person}:</span> {content}"
-  else:
-    return f"<p class='{item[0]}'>{item[1]}</p>"
+  return f"<p>{line}</p>"
 
 def process(path):
   print(f"Process: {path}")
   with open(path) as f:
-    lines = sanitize(f.read())
-    content = "\n".join([format(l) for l in parse(lines)])
+    lines = [line.strip() for line in f.read().split("\n") if line.strip() != ""]
+    content = "\n".join([format(l) for l in lines])
     with tempfile.NamedTemporaryFile(mode="w+t", encoding="utf8") as tmp:
       tmp.write(template.substitute(content=content))
       tmp.flush()

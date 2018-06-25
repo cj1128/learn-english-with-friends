@@ -33,7 +33,8 @@ h1+p, h2+p, h3+p {
   page-break-before: avoid;
 }
 
-.title {
+/* title */
+body p:first-child {
   font-size: 1.2rem;
   font-family: "Helvetica";
   text-align: center;
@@ -44,19 +45,19 @@ h1+p, h2+p, h3+p {
   string-set: doctitle content();
 }
 
-.scene {
-  color: #666;
+/* end */
+body p:last-child {
   font-weight: bold;
 }
 
 .comment {
-  color: gray;
+  color: #666;
 }
 
 .person {
   font-weight: bold;
 }
 
-.end {
+.highlight {
   font-weight: bold;
 }

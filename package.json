@@ -1,0 +1,16 @@
+{
+  "name": "learn-english-with-friends",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "gen": "node src/gen.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "CJ T <cjting1128@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "10.0.0",
+    "glob": "9.3.0"
+  }
+}

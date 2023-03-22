@@ -4,7 +4,7 @@
 
   @bottom-left {
     margin: 0pt 0 10pt 0;
-    border-bottom: 0.25pt solid #333;
+    border-bottom: 0.5pt solid #333;
     content: string(doctitle);
     font-size: 5pt;
     color: #333;
@@ -12,22 +12,30 @@
 
   @bottom-right {
     margin: 0pt 0 10pt 0;
-    border-bottom: 0.25pt solid #333;
+    border-bottom: 0.5pt solid #333;
     content: counter(page);
     font-size: 5pt;
     color: #333;
   }
+
+  @footnote {
+    border-top: solid #333 0.5pt;
+    margin-top: 2pt;
+    padding-top: 4pt;
+    padding-bottom: 4pt;
+  }
 }
 
 html {
-  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode",
-    "Lucida Sans", Tahoma, sans-serif;
+  font-family: "Trebuchet MS", "PingFang SC", "Lucida Grande",
+    "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
   line-height: 1.4;
   font-size: 7pt;
 }
 
 p {
   margin: 5px 0;
+  -prince-footnote-policy: keep-with-line;
 }
 
 h1 + p,
@@ -36,24 +44,26 @@ h3 + p {
   page-break-before: avoid;
 }
 
-/* title */
-body p:first-child {
-  font-size: 1.2rem;
-  font-family: "Helvetica";
-  text-align: center;
-  font-weight: bold;
-  margin: 15px;
-  page-break-after: avoid;
-  page-break-inside: avoid;
+.footnote {
+  float: footnote;
+  footnote-style-position: inside;
 }
-
-/* end */
-body p:last-child {
-  font-weight: bold;
+.footnote-term {
+  text-decoration: underline;
 }
 
 .title {
-  color: #1d4ed8;
+  font-family: "Helvetica";
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px;
+  page-break-after: avoid;
+  page-break-inside: avoid;
+  string-set: doctitle content();
+}
+.title a {
+  color: black;
 }
 
 .comment {

@@ -11,6 +11,7 @@ const CSS_PATH = new URL("./pdf.css", import.meta.url).pathname
 const program = new Command()
 
 program.option("-o, --overwrite")
+program.option("-h, --html")
 
 start()
 
@@ -75,7 +76,9 @@ function handle(file, opts) {
 
     fs.writeFileSync(htmlPath, html)
 
-    execSync(`prince ${htmlPath} -s ${CSS_PATH} -o ${resultPath}`)
+    if (!opts.html) {
+      execSync(`prince ${htmlPath} -s ${CSS_PATH} -o ${resultPath}`)
+    }
 
     console.log(`Process ${file}, done`)
   } catch (err) {
@@ -84,17 +87,26 @@ function handle(file, opts) {
 }
 
 function formatLine(line, idx) {
-  // comment
-  line = line.replace(/\[.+?\]/g, `<span class='comment'>$&</span>`)
-
   // person
   line = line.replace(/^\w.+?:/g, `<span class='person'>$&</span>`)
+
+  // footnote
+  line = line.replace(
+    /\[(.+?)\]\((.+?)\)/g,
+    `<span class='footnote-term'>$1</span><span class="footnote">$2</span>`
+  )
+
+  // comment
+  line = line.replace(
+    /\[(.+?)\]|\((.+?)\)/g,
+    `<span class='comment'>[$1$2]</span>`
+  )
 
   // highlight
   line = line.replace(/\*(.+?)\*/g, `<span class='highlight'>$1</span>`)
 
   return idx === 0
-    ? `<p><a class="title" href="https://github.com/cj1128/learn-english-with-friends">${line}</a></p>`
+    ? `<p class="title"><a href="https://github.com/cj1128/learn-english-with-friends">${line}</a></p>`
     : `<p>${line}</p>`
 }
 
